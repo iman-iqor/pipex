@@ -8,6 +8,7 @@
 
 
 
+
 char** extract_path(char** envp1)
 {
     int i = 0;
@@ -29,16 +30,74 @@ char* concatenate_path(char*oneDfromthetwoDpath,char* command_name)
 {
     
     char* path;
+    char* full_path;
     path = NULL;
+    full_path = NULL;
     if(!oneDfromthetwoDpath)
         return NULL;
    
     path = ft_strjoin(oneDfromthetwoDpath,"/");
-    path = ft_strjoin(path,command_name);
     
-    return path;
+    full_path = ft_strjoin(path,command_name);
+    
+    free(path);
+    return full_path;
 }
 
+
+void free_two_d_array(char** arr)
+{
+    int	i;
+
+	i = 0;
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
+}
+
+// char* if_executable(char* path,char** twoDpath)
+// {
+//     if(access(path,X_OK) == 0)
+//     {
+//         free_two_d_array(twoDpath);
+//         return path;
+//     }
+//     else
+//         ft_printf("%s \n",strerror(errno));
+//     return NULL;
+// }
+
+
+
+
+char* check_path(char** twoDpath,char* command_name)
+{
+    int i;
+    i = 0;
+    char* path;
+    
+    while(twoDpath[i])
+    {
+        path = NULL;
+        path = concatenate_path(twoDpath[i],command_name);
+        if(access(path,F_OK) == 0)
+        {
+            free_two_d_array(twoDpath);
+            return path;
+        }
+        else
+        {
+            free(path);
+        }
+        i++;
+    }
+
+    free_two_d_array(twoDpath);
+    return NULL;
+}
 
 int main(int argc,char**argv,char** envp)
 {
@@ -46,7 +105,7 @@ int main(int argc,char**argv,char** envp)
     int pid1, pid2;
     (void)envp;
     
-    if(pipe(fd) == -1)
+    if(pipe(fd) == -1) 
     {
         perror("pipe:");
         return -1;
@@ -57,12 +116,6 @@ int main(int argc,char**argv,char** envp)
         return 1;
     }
 
-    char** paths = extract_path(envp);
-    char**av = ft_split(argv[2],' ');
-    char* command_name = av[0];
-    char* pat=concatenate_path(paths[0],command_name);
-    
-    ft_printf("%s\n",pat);
 
 
 
@@ -88,10 +141,15 @@ int main(int argc,char**argv,char** envp)
         close(fd[1]);
 
         char **av = ft_split(argv[2], ' ');
+        if (!av) {
+            perror("ft_split error");
+                return 1;
+        }
 
         if (execve(av[0],av,env) == -1)
         {
             perror("cmd1 error:");
+            free(av);
             return 1;
         }
     }
