@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   execute.c                                          :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/01/15 21:49:07 by imiqor            #+#    #+#             */
+/*   Updated: 2025/01/15 21:52:37 by imiqor           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "ft_fprintf/ft_fprintf.h"
 #include "ft_printf/ft_printf.h"
 #include "libft/libft.h"
@@ -10,22 +22,23 @@
 char	**extract_path(char **envp1)
 {
 	int		i;
-	char	*allpathinoneDpath;
-	char	**twoDpaths;
+	char	*all_path_in_one_d_path;
+	char	**two_d_paths;
 
 	i = 0;
 	while (envp1[i])
 	{
-		allpathinoneDpath = ft_strnstr(envp1[i], "PATH", 4);
-		if (allpathinoneDpath)
+		all_path_in_one_d_path = ft_strnstr(envp1[i], "PATH", 4);
+		if (all_path_in_one_d_path)
 		{
-			twoDpaths = ft_split(allpathinoneDpath + 5, ':');
-			return (twoDpaths);
+			two_d_paths = ft_split(all_path_in_one_d_path + 5, ':');
+			return (two_d_paths);
 		}
 		i++;
 	}
 	return (NULL);
 }
+
 char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {
 	char	*path;
@@ -53,18 +66,6 @@ void	free_two_d_array(char **arr)
 	}
 	free(arr);
 }
-
-// char* if_executable(char* path,char** twoDpath)
-// {
-//     if(access(path,X_OK) == 0)
-//     {
-//         free_two_d_array(twoDpath);
-//         return (path);
-//     }
-//     else
-//         ft_printf("%s \n",strerror(errno));
-//     return (NULL);
-// }
 
 // char* check_path(char** twoDpath,char* command_name)
 // {
