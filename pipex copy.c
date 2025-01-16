@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex.c                                            :+:      :+:    :+:   */
+/*   pipex copy.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/15 22:08:40 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/16 22:41:29 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,16 +21,14 @@
 char	**extract_path(char **envp1)
 {
 	int		i;
-	char	*allpathinone_d_path;
 	char	**two_d_paths;
 
 	i = 0;
 	while (envp1[i])
 	{
-		allpathinone_d_path = ft_strnstr(envp1[i], "PATH", 4);
-		if (allpathinone_d_path)
+		if (ft_strncmp(envp1[i], "PATH=", 5) == 0)
 		{
-			two_d_paths = ft_split(allpathinone_d_path + 5, ':');
+			two_d_paths = ft_split(envp1[i] + 5, ':');
 			return (two_d_paths);
 		}
 		i++;
@@ -74,6 +72,9 @@ char	*check_path(char **twoDpath, char *command_name)
 
 	i = 0;
 	o = NULL;
+	if(access(command_name,F_OK|X_OK) != -1)
+		return (ft_strdup(command_name));
+	
 	while (twoDpath[i])
 	{
 		path = NULL;
@@ -97,93 +98,60 @@ char	*check_path(char **twoDpath, char *command_name)
 
 int main(int argc, char **argv, char **envp)
 {
-    int fd[2];
-    int pid1;
-    int pid2;
-    char **env;
-    
+    int     fd[2];
+    int     pid1;
+    int     pid2;
+    int     f1;
+	int 	f2;
+    char    **env;
+    char    **av;
+	char 	*exact_path_1;
+
     if(pipe(fd) == -1) 
         return (perror("pipe:"),-1);
     if(argc <=4)
-    {
-        ft_printf("pipe usage:program name + file1.txt + cmd1 + cmd2 + file2.txt  at  least in the mandatory");
-        return 1;
-    }
+        return (ft_printf("pipe usage:program name + file1.txt + cmd1 + cmd2 + file2.txt  at  least in the mandatory"),1);
     env = extract_path(envp);
     pid1 = fork();
     if(pid1 == 0)
     {
         close(fd[0]);
-        
-        int f = open(argv[1], O_RDONLY);
-        if(f < 0)
-        {
-            perror("open file1: ");
-            return 1;
-        }
-        dup2(f,0);
-        close(f);
-
-        dup2(fd[1] , 1);
+        f1 = open(argv[1], O_RDONLY);
+        if(f1 < 0)
+            return (perror("open file1: "),1);
+        dup2(f1, 0);
+        close(f1);
+        dup2(fd[1], 1);
         close(fd[1]);
-
-        char **av = ft_split(argv[2], ' ');
-        if (!av || !av[0])
-	{
-	    free_two_d_array(env);
-	    free_two_d_array(av);
-            perror("ft_split error");
-                return 1;
-        }
-        char *exact_path = check_path(env,av[0]);
-        if (execve(exact_path,av,envp) == -1)
-        {
-            perror("cmd1 error:");
-            free(av);
-            return 1;
-        }
+        av = ft_split(argv[2], ' '); 
+		if (!av || !av[0])
+                return (free_two_d_array(env), free_two_d_array(av),perror("u passed null command a ptipana"),1);
+        exact_path_1 = check_path(env, av[0]);
+        if (execve(exact_path_1, av, envp) == -1)
+            exit ((perror("cmd1 error:"),free(av),1));
     }
-
     pid2 = fork();
-
     if(pid2 == 0)
     {
         close(fd[1]);
-
-        int f = open(argv[4], O_WRONLY | O_TRUNC);
-
-        if(f < 0)
-        {
-            perror("open file2:");
-            return 1;
-        }
-
-        dup2(f,1);
-        close(f);
-        
-        dup2(fd[0], 0); // Redirect pipe read-end to stdin
+		f2 = open(argv[4], O_WRONLY | O_TRUNC | O_CREAT, 0664);
+        if(f2 < 0)
+            return (perror(argv[4]), 1);
+        dup2(f2, 1);
+        close(f2);
+        dup2(fd[0], 0);
         close(fd[0]);
-
-        char **av = ft_split(argv[3], ' ');
+        av = ft_split(argv[3], ' ');
+		
         if (!av || !av[0])
-	{
-	    free_two_d_array(env);
-	    free_two_d_array(av);
-            perror("ft_split error");
-                return 1;
-	}
-        char *exact_path = check_path(env,av[0]);
-	free_two_d_array(env);
-        if (execve(exact_path,av,envp) == -1)
-        {
-            perror("cmd2 error:");
-            return 1;
-        }
+                return (free_two_d_array(env),free_two_d_array(av),perror("u passed null command a ptipana"),1);
+        char *exact_path_2 = check_path(env, av[0]);
+        if (execve(exact_path_2,av,envp) == -1)
+            exit((perror("cmd2 error:"), 1));
     }
     free_two_d_array(env);
     close(fd[0]);
     close(fd[1]);
-    waitpid(pid1, NULL, 1);
-    waitpid(pid2, NULL, 1);
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
 }
-
