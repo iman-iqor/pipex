@@ -34,7 +34,7 @@ char **extract_path(char **envp1)
         i++;
     }
     return (NULL);
-}
+}void
 
 char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {
