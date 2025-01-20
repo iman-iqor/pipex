@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/20 18:56:43 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/20 20:57:15 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -156,11 +156,12 @@ void handle_first_child(int *fd, char **argv, char **env, char **envp)
     int f1;
 
     close(fd[0]);
+    dup2(fd[1], 1);
+    close(fd[1]);
     f1 = open_file_for_reading(argv[1], env);
     dup2(f1, 0);
     close(f1);
-    dup2(fd[1], 1);
-    close(fd[1]);
+    
     execute_command(argv[2], env, envp);
 }
 
@@ -169,11 +170,11 @@ void handle_second_child(int *fd, char **argv, char **env, char **envp)
     int f2;
 
     close(fd[1]);
+    dup2(fd[0], 0);
+    close(fd[0]);
     f2 = open_file_for_writing(argv[4], env);
     dup2(f2, 1);
     close(f2);
-    dup2(fd[0], 0);
-    close(fd[0]);
     execute_command(argv[3], env, envp);
 }
 
