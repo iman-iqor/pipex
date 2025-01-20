@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/16 21:47:18 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/20 17:31:11 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -359,14 +359,14 @@ int main(int argc, char **argv, char **envp)
 
         char **av = ft_split(argv[3], ' ');
         if (!av || !av[0])
-	{
+	    {
 	    free_two_d_array(env);
 	    free_two_d_array(av);
             perror("ft_split error");
                 return 1;
-	}
+	    }
         char *exact_path = check_path(env,av[0]);
-	free_two_d_array(env);
+	    free_two_d_array(env);
         if (execve(exact_path,av,envp) == -1)
         {
             perror("cmd2 error:");

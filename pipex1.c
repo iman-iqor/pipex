@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipex3.c                                           :+:      :+:    :+:   */
+/*   pipex1.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/20 17:51:20 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/20 18:56:43 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,8 @@ void	free_two_d_array(char **arr)
 	free(arr);
 }
 
- char *check_command(char *path, char **twoDpath, char *o)
+
+static char *check_command(char *path, char **twoDpath, char *o)
 {
     if (access(path, F_OK) == 0 && !o)
         o = path;
@@ -110,20 +111,20 @@ int	open_file_for_reading(char *filename, char **env)
 	if (fd < 0)
 	{
 		free_two_d_array(env);
-		//perror(filename);
+		perror("open file1");
 	}
 	return (fd);
 }
 
-int	open_file_for_writing(char *filename, char **env)
+int	open_file_for_writing(char *filename,char** env)
 {
 	int	fd;
 
-	fd = open(filename, O_CREAT| O_WRONLY | O_TRUNC, 0664);
+	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0664);
 	if (fd < 0)
 	{
 		free_two_d_array(env);
-		// perror(filename);
+		perror(filename);
 	}
 	return (fd);
 }
@@ -149,57 +150,63 @@ void	execute_command(char *cmd, char **env, char **envp)
 		exit(1);
 	}
 }
-void close_pipe(int fd[])
+
+void handle_first_child(int *fd, char **argv, char **env, char **envp)
 {
-	close(fd[0]);
-	close(fd[1]);
+    int f1;
+
+    close(fd[0]);
+    f1 = open_file_for_reading(argv[1], env);
+    dup2(f1, 0);
+    close(f1);
+    dup2(fd[1], 1);
+    close(fd[1]);
+    execute_command(argv[2], env, envp);
 }
 
-void open_file(char *filename, char **env, int stdio)
+void handle_second_child(int *fd, char **argv, char **env, char **envp)
 {
-	int fd;
-	
-	fd = 0;
-	if (stdio == STDIN_FILENO)
-		fd = open_file_for_reading(filename, env);
-	else if (stdio == STDOUT_FILENO)
-		fd = open_file_for_writing(filename, env);
-	dup2(fd, 0);
-	close(fd);
+    int f2;
+
+    close(fd[1]);
+    f2 = open_file_for_writing(argv[4], env);
+    dup2(f2, 1);
+    close(f2);
+    dup2(fd[0], 0);
+    close(fd[0]);
+    execute_command(argv[3], env, envp);
 }
 
-
-
-
-void handle_child(char *filename, char *command_name, char **env, char **envp, int pipe_fds[], int mode)
+int setup_and_execute(int argc, char **argv, char **envp)
 {
-	open_file(filename, env, mode);
-	dup2(pipe_fds[1], 1);
-	close_pipe(pipe_fds);
-	execute_command(command_name, env, envp);
+    int fd[2];
+    int pid1, pid2;
+    char **env;
+
+    if (pipe(fd) == -1)
+        return (perror("pipe"), -1);
+    if (argc <= 4)
+        return (ft_printf("Usage: %s file1 cmd1 cmd2 file2\n", argv[0]), 1);
+
+    env = extract_path(envp);
+    pid1 = fork();
+    if (pid1 == 0)
+        handle_first_child(fd, argv, env, envp);
+
+    pid2 = fork();
+    if (pid2 == 0)
+        handle_second_child(fd, argv, env, envp);
+
+    free_two_d_array(env);
+    close(fd[0]);
+    close(fd[1]);
+    waitpid(pid1, NULL, 0);
+    waitpid(pid2, NULL, 0);
+
+    return 0;
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	int		pipe_fds[2];
-	int		pid1;
-	int		pid2;
-	char	**env;
-
-	if (pipe(pipe_fds) == -1)
-		return (perror("pipe"), -1);
-	if (argc <= 4)
-		return (ft_printf("Usage: %s file1 cmd1 cmd2 file2\n", argv[0]), 1);
-	env = extract_path(envp);
-	pid1 = fork();
-	if (pid1 == 0)
-		handle_child(argv[1], argv[2], env, envp, pipe_fds, STDIN_FILENO);
-	pid2 = fork();
-	if (pid2 == 0)
-		handle_child(argv[4], argv[3], env, envp, pipe_fds, STDOUT_FILENO);
-	free_two_d_array(env);
-	close_pipe(pipe_fds);
-	waitpid(pid1, NULL, 0);
-	waitpid(pid2, NULL, 0);
-	return (0);
+    return setup_and_execute(argc, argv, envp);
 }
