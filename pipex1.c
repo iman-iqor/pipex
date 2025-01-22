@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/20 20:57:15 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/22 20:55:21 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,11 @@ char	**extract_path(char **envp1)
 	char	**two_d_paths;
 
 	i = 0;
-	while (envp1[i])
+    if(!envp1)
+    {
+        return NULL;
+    }
+	while(envp1[i])
 	{
 		if (ft_strncmp(envp1[i], "PATH=", 5) == 0)
 		{
@@ -56,6 +60,11 @@ void	free_two_d_array(char **arr)
 	int	i;
 
 	i = 0;
+    if(!arr)
+    {
+        return ;
+        
+    }
 	while (arr[i] != NULL)
 	{
 		free(arr[i]);
@@ -142,6 +151,13 @@ void	execute_command(char *cmd, char **env, char **envp)
 		perror("Invalid command");
 		exit(1);
 	}
+    if(open(cmd,__O_DIRECTORY) != -1)
+    {
+        free_two_d_array(env);
+		free_two_d_array(av);
+		ft_fprintf(2,"%s is a diirectory",cmd);
+		exit(1);
+    }
 	exact_path = check_path(env, av[0]);
 	if (execve(exact_path, av, envp) == -1)
 	{
