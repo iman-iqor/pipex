@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/23 16:28:59 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/01/25 20:58:57 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	open_file_for_reading(char *filename, char **env)
 	if (fd < 0)
 	{
 		free_two_d_array(env);
-		perror("open file1");
+		perror(filename);
 	}
 	return (fd);
 }
