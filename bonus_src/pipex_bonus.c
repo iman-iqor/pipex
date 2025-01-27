@@ -1,10 +1,9 @@
-#include"pipex_bonus.h"
+#include "pipex_bonus.h"
 
-
-char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
+char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {
-	char	*path;
-	char	*full_path;
+	char *path;
+	char *full_path;
 
 	path = NULL;
 	full_path = NULL;
@@ -16,12 +15,12 @@ char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 	return (full_path);
 }
 
-char	*check_path(char **twoDpath, char *command_name)
+char *check_path(char **twoDpath, char *command_name)
 {
-	int		i;
-	char	*path;
-	char	*o;
-	char	*result;
+	int i;
+	char *path;
+	char *o;
+	char *result;
 
 	i = 0;
 	path = NULL;
@@ -40,10 +39,10 @@ char	*check_path(char **twoDpath, char *command_name)
 	return (o);
 }
 
-char	**extract_path(char **envp1)
+char **extract_path(char **envp1)
 {
-	int		i;
-	char	**two_d_paths;
+	int i;
+	char **two_d_paths;
 
 	i = 0;
 	if (!envp1)
@@ -62,7 +61,7 @@ char	**extract_path(char **envp1)
 	return (NULL);
 }
 
-char	*check_command(char *path, char **twoDpath, char *o)
+char *check_command(char *path, char **twoDpath, char *o)
 {
 	if (access(path, F_OK) == 0 && !o)
 		o = path;
@@ -78,10 +77,10 @@ char	*check_command(char *path, char **twoDpath, char *o)
 	return (NULL);
 }
 
-void	execute_command(char *cmd, char **env, char **envp)
+void execute_command(char *cmd, char **env, char **envp)
 {
-	char	**av;
-	char	*exact_path;
+	char **av;
+	char *exact_path;
 
 	av = ft_split(cmd, ' ');
 	if (!av || !av[0])
@@ -102,19 +101,19 @@ void	execute_command(char *cmd, char **env, char **envp)
 	if (execve(exact_path, av, envp) == -1)
 	{
 		ft_fprintf(2, "%s: Failed during execve\n", exact_path);
-		//perror(exact_path);
+		// perror(exact_path);
 		free_two_d_array(av);
 		exit(1);
 	}
 }
-void	free_two_d_array(char **arr)
+void free_two_d_array(char **arr)
 {
-	int	i;
+	int i;
 
 	i = 0;
 	if (!arr)
 	{
-		return ;
+		return;
 	}
 	while (arr[i] != NULL)
 	{
@@ -123,7 +122,7 @@ void	free_two_d_array(char **arr)
 	}
 	free(arr);
 }
-void	check_pipe_is_valid(int pipe_return)
+void check_pipe_is_valid(int pipe_return)
 {
 	if (pipe_return == -1)
 	{
@@ -132,9 +131,9 @@ void	check_pipe_is_valid(int pipe_return)
 	}
 }
 
-void	dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
+void dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
 {
-	int	dup_ret;
+	int dup_ret;
 
 	close(fd1);
 	dup_ret = dup2(fd2, mode);
@@ -145,9 +144,9 @@ void	dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
 	}
 	close(fd2);
 }
-void	dup2_and_close_file_fd(int fd, int mode)
+void dup2_and_close_file_fd(int fd, int mode)
 {
-	int	dup_ret;
+	int dup_ret;
 
 	dup_ret = dup2(fd, mode);
 	if (dup_ret == -1)
@@ -157,9 +156,9 @@ void	dup2_and_close_file_fd(int fd, int mode)
 	}
 	close(fd);
 }
-int	open_input_file(char *filename,char** env)
+int open_input_file(char *filename, char **env)
 {
-	int	fd;
+	int fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -170,9 +169,9 @@ int	open_input_file(char *filename,char** env)
 	return (fd);
 }
 
-int	open_output_file(char *filename,char** env)
+int open_output_file(char *filename, char **env)
 {
-	int	fd;
+	int fd;
 
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
@@ -183,7 +182,7 @@ int	open_output_file(char *filename,char** env)
 	return (fd);
 }
 
-void	check_fork(int fork_ret, char **env)
+void check_fork(int fork_ret, char **env)
 {
 	if (fork_ret == -1)
 	{
@@ -193,11 +192,11 @@ void	check_fork(int fork_ret, char **env)
 	}
 }
 
-int	main(int argc, char **argv, char **envp)
+int main(int argc, char **argv, char **envp)
 {
-	int	n;
-	int	i;
-	int	fd[2];
+	int n;
+	int i;
+	int fd[2];
 	int pid;
 	int fd1;
 	char **env;
@@ -205,55 +204,33 @@ int	main(int argc, char **argv, char **envp)
 	if (argc >= 5)
 	{
 		n = argc - 3;
-		i = 0;
+		i = 2;
 		env = extract_path(envp);
-		while (i <= n)
+		fd1 = open_input_file(argv[1], env);
+		dup2_and_close_file_fd(fd1, 0);
+		fd1 = open_output_file(argv[argc - 1], env);
+		dup2_and_close_file_fd(fd1, 1);
+		while (i < argc - 1)
 		{
-			if (i == 0)
-			{
-				// first command
+			if (i != argc - 2)
 				check_pipe_is_valid(pipe(fd));
-				pid = fork();
-				check_fork(pid, env);
-				if (pid == 0)
-				{
-					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
-					fd1 = open_input_file(argv[1],env);
-					dup2_and_close_file_fd(fd1, 0);
-					execute_command(argv[2], env, envp);
-				}
-				else
-					dup2_and_close_pipe_fds(fd[1], fd[0], 0);
-			}
-			else if (i == n - 1)
+			pid = fork();
+			check_fork(pid, env);
+			if (pid == 0)
 			{
-				// last command
-				// check_pipe_is_valid(pipe(fd));
-				pid = fork();
-				check_fork(pid, env);
-				if (pid == 0)
-				{
-					fd1 = open_output_file(argv[argc - 1],env);
-					dup2_and_close_file_fd(fd1, 1);
-					execute_command(argv[argc-2], env, envp);
-				}
-			}
-			else
-			{
-				// middle commands
-				check_pipe_is_valid(pipe(fd));
-				pid = fork();
-				check_fork(pid, env);
-				if (pid == 0)
-				{
+				if (i != argc - 2)
 					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
-					execute_command(argv[i + 1], env, envp);
-				}
-				else
-					dup2_and_close_pipe_fds(fd[1], fd[0], 0);
+				execute_command(argv[i], env, envp);
+				
 			}
+			else if(i != argc - 2)
+				dup2_and_close_pipe_fds(fd[1], fd[0], 0);
+			if(i == argc - 2)
+				waitpid(pid,NULL,0);
 			i++;
 		}
+		while (wait(NULL) > 0)
+;
 	}
 	else
 		ft_printf("Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n");
