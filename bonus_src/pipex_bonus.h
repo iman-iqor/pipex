@@ -4,7 +4,7 @@
 #include "../ft_fprintf/ft_fprintf.h"
 #include "../ft_printf/ft_printf.h"
 #include "../libft/libft.h"
-#include "/get_next_line/get_next_line.h"
+#include "/m/get_next_line.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>

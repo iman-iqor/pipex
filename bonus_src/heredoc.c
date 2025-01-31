@@ -1,6 +1,6 @@
 
 #include <stdio.h>
-#include "./get_next_line/get_next_line_bonus.h"
+#include "./m/get_next_line_bonus.h"
 #include "../libft/libft.h"
 
 int ft_strcmp(char *str1, char *str2)
