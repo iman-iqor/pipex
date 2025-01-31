@@ -194,7 +194,7 @@ void check_fork(int fork_ret, char **env)
 
 int main(int argc, char **argv, char **envp)
 {
-	int n;
+	// int n;
 	int i;
 	int fd[2];
 	int pid;
@@ -203,7 +203,7 @@ int main(int argc, char **argv, char **envp)
 
 	if (argc >= 5)
 	{
-		n = argc - 3;
+		// n = argc - 3;
 		i = 2;
 		env = extract_path(envp);
 		fd1 = open_input_file(argv[1], env);
@@ -212,12 +212,16 @@ int main(int argc, char **argv, char **envp)
 		dup2_and_close_file_fd(fd1, 1);
 		while (i < argc - 1)
 		{
+			// create pipe if we are not in last command
 			if (i != argc - 2)
 				check_pipe_is_valid(pipe(fd));
+			// create child process
 			pid = fork();
 			check_fork(pid, env);
 			if (pid == 0)
 			{
+				// in child process
+				// dup2 for pip with stdout if we are not in last command // if it is last command we need dup2 stdout with outfile 
 				if (i != argc - 2)
 					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
 				execute_command(argv[i], env, envp);
@@ -225,12 +229,12 @@ int main(int argc, char **argv, char **envp)
 			}
 			else if(i != argc - 2)
 				dup2_and_close_pipe_fds(fd[1], fd[0], 0);
-			if(i == argc - 2)
-				waitpid(pid,NULL,0);
 			i++;
 		}
 		while (wait(NULL) > 0)
-;
+			{
+
+			}
 	}
 	else
 		ft_printf("Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n");
