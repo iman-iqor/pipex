@@ -1,4 +1,4 @@
-#include "pipex_bonus.h"
+#include"pipex_bonus.h"
 
 char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {
@@ -90,7 +90,7 @@ void execute_command(char *cmd, char **env, char **envp)
 		ft_fprintf(2, "Invalid command => empty\n");
 		exit(1);
 	}
-	if (open(cmd, O_DIRECTORY) != -1)
+	if (open(cmd, __O_DIRECTORY) != -1)
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);

@@ -1,7 +1,7 @@
 CC = cc
 CFLAGS = -Wall -Wextra -Werror
-SRC = pipex.c utils1.c utils2.c 
-NAME  = pipex
+SRC =heredoc.c ./m/get_next_line_bonus.c ./m/get_next_line_utils_bonus.c 
+NAME  = here_doc
 RM = rm -f
 
 all: ${NAME} 

@@ -4,10 +4,11 @@
 #include "../ft_fprintf/ft_fprintf.h"
 #include "../ft_printf/ft_printf.h"
 #include "../libft/libft.h"
-#include "/m/get_next_line.h"
+#include "./m/get_next_line_bonus.h"
 #include <fcntl.h>
 #include <stdlib.h>
 #include <unistd.h>
+#include <sys/wait.h>
 
 char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name);
 char	*check_path(char **twoDpath, char *command_name);
