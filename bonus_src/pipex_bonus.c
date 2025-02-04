@@ -94,14 +94,13 @@ void execute_command(char *cmd, char **env, char **envp)
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);
-		ft_fprintf(2, "%s is a diirectory", cmd);
+		ft_fprintf(2, "%s is a directory", cmd);
 		exit(1);
 	}
 	exact_path = check_path(env, av[0]);
 	if (execve(exact_path, av, envp) == -1)
 	{
 		ft_fprintf(2, "%s: Failed during execve\n", exact_path);
-		// perror(exact_path);
 		free_two_d_array(av);
 		exit(1);
 	}
@@ -192,51 +191,51 @@ void check_fork(int fork_ret, char **env)
 	}
 }
 
-int main(int argc, char **argv, char **envp)
-{
-	// int n;
-	int i;
-	int fd[2];
-	int pid;
-	int fd1;
-	char **env;
+//int main(int argc, char **argv, char **envp)
+//{
+//	// int n;
+//	int i;
+//	int fd[2];
+//	int pid;
+//	int fd1;
+//	char **env;
 
-	if (argc >= 5)
-	{
-		// n = argc - 3;
-		i = 2;
-		env = extract_path(envp);
-		fd1 = open_input_file(argv[1], env);
-		dup2_and_close_file_fd(fd1, 0);
-		fd1 = open_output_file(argv[argc - 1], env);
-		dup2_and_close_file_fd(fd1, 1);
-		while (i < argc - 1)
-		{
-			// create pipe if we are not in last command
-			if (i != argc - 2)
-				check_pipe_is_valid(pipe(fd));
-			// create child process
-			pid = fork();
-			check_fork(pid, env);
-			if (pid == 0)
-			{
-				// in child process
-				// dup2 for pip with stdout if we are not in last command // if it is last command we need dup2 stdout with outfile 
-				if (i != argc - 2)
-					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
-				execute_command(argv[i], env, envp);
+//	if (argc >= 5)
+//	{
+//		// n = argc - 3;
+//		i = 2;
+//		env = extract_path(envp);
+//		fd1 = open_input_file(argv[1], env);
+//		dup2_and_close_file_fd(fd1, 0);
+//		fd1 = open_output_file(argv[argc - 1], env);
+//		dup2_and_close_file_fd(fd1, 1);
+//		while (i < argc - 1)
+//		{
+//			// create pipe if we are not in last command
+//			if (i != argc - 2)
+//				check_pipe_is_valid(pipe(fd));
+//			// create child process
+//			pid = fork();
+//			check_fork(pid, env);
+//			if (pid == 0)
+//			{
+//				// in child process
+//				// dup2 for pip with stdout if we are not in last command // if it is last command we need dup2 stdout with outfile 
+//				if (i != argc - 2)
+//					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
+//				execute_command(argv[i], env, envp);
 				
-			}
-			else if(i != argc - 2)
-				dup2_and_close_pipe_fds(fd[1], fd[0], 0);
-			i++;
-		}
-		while (wait(NULL) > 0)
-			{
+//			}
+//			else if(i != argc - 2)
+//				dup2_and_close_pipe_fds(fd[1], fd[0], 0);
+//			i++;
+//		}
+//		while (wait(NULL) > 0)
+//			{
 
-			}
-	}
-	else
-		ft_printf("Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n");
-	return (0);
-}
+//			}
+//	}
+//	else
+//		ft_printf("Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n");
+//	return (0);
+//}
