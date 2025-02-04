@@ -1,4 +1,3 @@
-
 #include "./m/get_next_line_bonus.h"
 #include "../libft/libft.h"
 #include "../ft_printf/ft_printf.h"
@@ -7,8 +6,6 @@
 #include <unistd.h>
 #include <stdio.h>
 #include <sys/wait.h>
-
-
 
 int open_output_filee_here_doc_util(char *filename, char **env)
 {
@@ -24,8 +21,6 @@ int open_output_filee_here_doc_util(char *filename, char **env)
 }
 void handle_first_child(int *fd, char **argv, char **env, char **envp)
 {
-    int f1;
-
     close(fd[0]);
     dup2(fd[1], 1);
     close(fd[1]);
@@ -133,7 +128,7 @@ int setup_and_execute(int argc, char **argv, char **envp)
     return (0);
 }
 
-int ft_pipe_and_fork(char **argv, int argc, char **envp)
+void ft_pipe_and_fork(char **argv, int argc, char **envp)
 {
     char *str;
     int fd[2];
@@ -141,14 +136,12 @@ int ft_pipe_and_fork(char **argv, int argc, char **envp)
 
     str = here_doc_wih_get_next_line(argv[1], argv[2]);
     pipe_is_valid(pipe(fd));
-    dup2(fd[1], 1);
-    close(fd[1]);
-    ft_printf("%s", str);
+    write(fd[1], str, ft_strlen(str));
+    //ft_printf("%s", str);
     dup2(fd[0], 0);
     close(fd[0]);
-
+    close(fd[1]);
     setup_and_execute(argc, argv, envp);
-    
 }
 
 int main(int argc, char **argv, char **envp)
