@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   get_next_line_bonus.c                              :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: macbookair <macbookair@student.42.fr>      +#+  +:+       +#+        */
+/*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/29 20:54:57 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/31 21:12:53 by macbookair       ###   ########.fr       */
+/*   Updated: 2025/02/04 23:48:25 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,17 +92,17 @@ char	*read_from_file(char *save, int fd)
 
 char	*get_next_line(int fd)
 {
-	static char	*save[1024];
+	static char	*save;
 	char		*line;
 
 	if (fd < 0 || BUFFER_SIZE <= 0 || fd > 1024)
+		return (free(save), NULL);
+	save = read_from_file(save, fd);
+	if (!save)
 		return (NULL);
-	save[fd] = read_from_file(save[fd], fd);
-	if (!save[fd])
-		return (NULL);
-	line = ft_extract_line(save[fd]);
-	save[fd] = clean_buffer(save[fd]);
+	line = ft_extract_line(save);
+	save = clean_buffer(save);
 	if (!line)
-		free(save[fd]);
+		free(save);
 	return (line);
 }

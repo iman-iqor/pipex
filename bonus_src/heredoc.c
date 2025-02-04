@@ -63,10 +63,11 @@ int here_doc_exist(char *argv1)
 char *here_doc_wih_get_next_line(char *argv1, char *argv2)
 {
     char *buffer;
-    buffer = NULL;
     char *s;
-    s = NULL;
     int str_cmp_return;
+    
+    buffer = NULL;
+    s = NULL;
     argv2 = ft_strjoin(argv2, "\n");
     if (here_doc_exist(argv1))
     {
@@ -77,7 +78,10 @@ char *here_doc_wih_get_next_line(char *argv1, char *argv2)
             str_cmp_return = ft_strcmp(s, argv2);
             if (str_cmp_return != 0)
                 buffer = ft_strjoin(buffer, s);
+            free(s);
         }
+        free(argv2);
+        get_next_line(-1);
         return buffer;
     }
     return NULL;
@@ -137,6 +141,7 @@ void ft_pipe_and_fork(char **argv, int argc, char **envp)
     str = here_doc_wih_get_next_line(argv[1], argv[2]);
     pipe_is_valid(pipe(fd));
     write(fd[1], str, ft_strlen(str));
+    free(str);
     //ft_printf("%s", str);
     dup2(fd[0], 0);
     close(fd[0]);
