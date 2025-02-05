@@ -77,7 +77,7 @@ char *here_doc_wih_get_next_line(char *argv1, char *argv2)
             s = get_next_line(0);
             str_cmp_return = ft_strcmp(s, argv2);
             if (str_cmp_return != 0)
-                buffer = ft_strjoin(buffer, s);
+                buffer = ft_sstrjoin(buffer, s);
             free(s);
         }
         free(argv2);
@@ -94,7 +94,7 @@ void pipe_is_valid(int pipe_return)
         exit(-1);
     }
 }
-
+\
 void fork_is_valid(int fork_return)
 {
     if (fork_return == -1)

@@ -1,5 +1,5 @@
 CC = cc
-CFLAGS = -Wall -Wextra -Werror
+CFLAGS = -Wall -Wextra -Werror 
 SRC =heredoc.c pipex_bonus.c ./m/get_next_line_bonus.c ./m/get_next_line_utils_bonus.c 
 NAME  = here_doc
 RM = rm -f
