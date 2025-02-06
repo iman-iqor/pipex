@@ -1,9 +1,21 @@
-#include"pipex_bonus.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   pipex_bonus.c                                      :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
+/*   Updated: 2025/02/06 19:10:29 by imiqor           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
-char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
+#include "pipex_bonus.h"
+
+char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {
-	char *path;
-	char *full_path;
+	char	*path;
+	char	*full_path;
 
 	path = NULL;
 	full_path = NULL;
@@ -15,12 +27,12 @@ char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 	return (full_path);
 }
 
-char *check_path(char **twoDpath, char *command_name)
+char	*check_path(char **twoDpath, char *command_name)
 {
-	int i;
-	char *path;
-	char *o;
-	char *result;
+	int		i;
+	char	*path;
+	char	*o;
+	char	*result;
 
 	i = 0;
 	path = NULL;
@@ -36,13 +48,13 @@ char *check_path(char **twoDpath, char *command_name)
 		i++;
 	}
 	free_two_d_array(twoDpath);
-	return ("dakshi li3titi");
+	return ("pipex");
 }
 
-char **extract_path(char **envp1)
+char	**extract_path(char **envp1)
 {
-	int i;
-	char **two_d_paths;
+	int		i;
+	char	**two_d_paths;
 
 	i = 0;
 	if (!envp1)
@@ -61,7 +73,7 @@ char **extract_path(char **envp1)
 	return (NULL);
 }
 
-char *check_command(char *path, char **twoDpath, char *o)
+char	*check_command(char *path, char **twoDpath, char *o)
 {
 	if (access(path, F_OK) == 0 && !o)
 		o = path;
@@ -77,10 +89,10 @@ char *check_command(char *path, char **twoDpath, char *o)
 	return (NULL);
 }
 
-void execute_command(char *cmd, char **env, char **envp)
+void	execute_command(char *cmd, char **env, char **envp)
 {
-	char **av;
-	char *exact_path;
+	char	**av;
+	char	*exact_path;
 
 	av = ft_split(cmd, ' ');
 	if (!av || !av[0])
@@ -105,14 +117,15 @@ void execute_command(char *cmd, char **env, char **envp)
 		exit(1);
 	}
 }
-void free_two_d_array(char **arr)
+
+void	free_two_d_array(char **arr)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (!arr)
 	{
-		return;
+		return ;
 	}
 	while (arr[i] != NULL)
 	{
@@ -121,7 +134,8 @@ void free_two_d_array(char **arr)
 	}
 	free(arr);
 }
-void check_pipe_is_valid(int pipe_return)
+
+void	check_pipe_is_valid(int pipe_return)
 {
 	if (pipe_return == -1)
 	{
@@ -130,9 +144,9 @@ void check_pipe_is_valid(int pipe_return)
 	}
 }
 
-void dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
+void	dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
 {
-	int dup_ret;
+	int	dup_ret;
 
 	close(fd1);
 	dup_ret = dup2(fd2, mode);
@@ -143,9 +157,10 @@ void dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
 	}
 	close(fd2);
 }
-void dup2_and_close_file_fd(int fd, int mode)
+
+void	dup2_and_close_file_fd(int fd, int mode)
 {
-	int dup_ret;
+	int	dup_ret;
 
 	dup_ret = dup2(fd, mode);
 	if (dup_ret == -1)
@@ -155,9 +170,10 @@ void dup2_and_close_file_fd(int fd, int mode)
 	}
 	close(fd);
 }
-int open_input_file(char *filename, char **env)
+
+int	open_input_file(char *filename, char **env)
 {
-	int fd;
+	int	fd;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
@@ -168,9 +184,9 @@ int open_input_file(char *filename, char **env)
 	return (fd);
 }
 
-int open_output_file(char *filename, char **env)
+int	open_output_file(char *filename, char **env)
 {
-	int fd;
+	int	fd;
 
 	fd = open(filename, O_CREAT | O_WRONLY | O_TRUNC, 0644);
 	if (fd < 0)
@@ -181,7 +197,7 @@ int open_output_file(char *filename, char **env)
 	return (fd);
 }
 
-void check_fork(int fork_ret, char **env)
+void	check_fork(int fork_ret, char **env)
 {
 	if (fork_ret == -1)
 	{
@@ -191,51 +207,83 @@ void check_fork(int fork_ret, char **env)
 	}
 }
 
-//int main(int argc, char **argv, char **envp)
-//{
-//	// int n;
-//	int i;
-//	int fd[2];
-//	int pid;
-//	int fd1;
-//	char **env;
+typedef struct s_state
+{
+	int		i;
+	int		fd[2];
+	int		pid;
+	int		fd1;
+	char	**env;
+}			t_state;
 
-//	if (argc >= 5)
-//	{
-//		// n = argc - 3;
-//		i = 2;
-//		env = extract_path(envp);
-//		fd1 = open_input_file(argv[1], env);
-//		dup2_and_close_file_fd(fd1, 0);
-//		fd1 = open_output_file(argv[argc - 1], env);
-//		dup2_and_close_file_fd(fd1, 1);
-//		while (i < argc - 1)
-//		{
-//			// create pipe if we are not in last command
-//			if (i != argc - 2)
-//				check_pipe_is_valid(pipe(fd));
-//			// create child process
-//			pid = fork();
-//			check_fork(pid, env);
-//			if (pid == 0)
-//			{
-//				// in child process
-//				// dup2 for pip with stdout if we are not in last command // if it is last command we need dup2 stdout with outfile 
-//				if (i != argc - 2)
-//					dup2_and_close_pipe_fds(fd[0], fd[1], 1);
-//				execute_command(argv[i], env, envp);
-				
-//			}
-//			else if(i != argc - 2)
-//				dup2_and_close_pipe_fds(fd[1], fd[0], 0);
-//			i++;
-//		}
-//		while (wait(NULL) > 0)
-//			{
+void	check_argc(int argc)
+{
+	//printf("%d\n",argc < 5);
+	if (argc < 5)
+	{
+	//	printf("%d\n",argc < 5);
+		write(2,"Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n",50);
+		exit(1);
+	}
+}
 
-//			}
-//	}
-//	else
-//		ft_printf("Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n");
-//	return (0);
-//}
+void	wait_all_pipex(void)
+{
+	while (wait(NULL) > 0)
+		continue ;
+}
+
+void	init_state(t_state *state, int argc, char **argv, char **envp)
+{
+	state->i = 2;
+	state->env = extract_path(envp);
+	state->fd1 = open_input_file(argv[1], state->env);
+	dup2_and_close_file_fd(state->fd1, 0);
+	state->fd1 = open_output_file(argv[argc - 1], state->env);
+	dup2_and_close_file_fd(state->fd1, 1);
+}
+
+void	in_parent(t_state state, int *in_fd)
+{
+	if (*in_fd)
+		close(*in_fd);
+	close(state.fd[1]);
+	*in_fd = state.fd[0];
+}
+
+void	child(t_state state, int argc, char **argv, char **envp)
+{
+	if (state.i && state.fd1)
+		dup2_and_close_pipe_fds(-1, state.fd1, 0);
+	if (state.i != argc - 2)
+		dup2_and_close_pipe_fds(state.fd[0], state.fd[1], 1);
+	execute_command(argv[state.i], state.env, envp);
+}
+
+int	main(int argc, char **argv, char **envp)
+{
+	t_state	state;
+	int		in_fd;
+
+	in_fd = 0;
+	ft_memset(&state, 0, sizeof(state));
+	if (!ft_pipe_and_fork(argv, argc, envp))
+		return (0);
+	check_argc(argc);
+	init_state(&state, argc, argv, envp);
+	while (state.i < argc - 1)
+	{
+		if (state.i != argc - 2)
+			check_pipe_is_valid(pipe(state.fd));
+		state.pid = fork();
+		check_fork(state.pid, state.env);
+		state.fd1 = in_fd;                     
+		if (state.pid == 0)
+			child(state, argc, argv, envp);
+		else
+			in_parent(state, &in_fd);
+		state.i++;
+	}
+	wait_all_pipex();
+	free_two_d_array(state.env);
+}

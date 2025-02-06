@@ -1,9 +1,9 @@
-CC = cc
+CC = cc -g3
 CFLAGS = -Wall -Wextra -Werror 
-SRC =heredoc.c pipex_bonus.c ./m/get_next_line_bonus.c ./m/get_next_line_utils_bonus.c 
-NAME  = here_doc
+SRC = heredoc.c pipex_bonus.c ./m/get_next_line_bonus.c ./m/get_next_line_utils_bonus.c 
+NAME  = pipex
 RM = rm -f
-
+bonus:all
 all: ${NAME} 
 
 ${NAME}: ${SRC}

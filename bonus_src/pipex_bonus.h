@@ -22,5 +22,6 @@ void	dup2_and_close_file_fd(int fd, int mode);
 int	open_input_file(char *filename,char** env);
 int	open_output_file(char *filename,char** env);
 void	check_fork(int fork_ret, char **env);
+int		ft_pipe_and_fork(char **argv, int argc, char **envp);
 
 #endif

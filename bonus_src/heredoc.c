@@ -132,24 +132,26 @@ int setup_and_execute(int argc, char **argv, char **envp)
     return (0);
 }
 
-void ft_pipe_and_fork(char **argv, int argc, char **envp)
+int ft_pipe_and_fork(char **argv, int argc, char **envp)
 {
     char *str;
     int fd[2];
     int pid;
 
+    if (!here_doc_exist(argv[1]))
+        return (1);
     str = here_doc_wih_get_next_line(argv[1], argv[2]);
     pipe_is_valid(pipe(fd));
     write(fd[1], str, ft_strlen(str));
     free(str);
-    //ft_printf("%s", str);
     dup2(fd[0], 0);
     close(fd[0]);
     close(fd[1]);
     setup_and_execute(argc, argv, envp);
+    return (0);
 }
 
-int main(int argc, char **argv, char **envp)
-{
-    ft_pipe_and_fork(argv, argc, envp);
-}
+//int main(int argc, char **argv, char **envp)
+//{
+//    ft_pipe_and_fork(argv, argc, envp);
+//}
