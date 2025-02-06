@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/06 19:10:29 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/06 21:11:02 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,13 +42,13 @@ char	*check_path(char **twoDpath, char *command_name)
 	while (twoDpath[i])
 	{
 		path = concatenate_path(twoDpath[i], command_name);
-		result = check_command(path, twoDpath, o);
+		result = check_command(path, twoDpath);
 		if (result)
 			return (result);
 		i++;
 	}
 	free_two_d_array(twoDpath);
-	return ("pipex");
+	return (NULL);
 }
 
 char	**extract_path(char **envp1)
@@ -73,19 +73,13 @@ char	**extract_path(char **envp1)
 	return (NULL);
 }
 
-char	*check_command(char *path, char **twoDpath, char *o)
+char	*check_command(char *path, char **twoDpath)
 {
-	if (access(path, F_OK) == 0 && !o)
-		o = path;
-	if (access(path, X_OK) == 0)
+	if (access(path, F_OK | X_OK) == 0)
 	{
 		free_two_d_array(twoDpath);
-		if (o != path)
-			free(o);
 		return (path);
 	}
-	if (o != path)
-		free(path);
 	return (NULL);
 }
 
@@ -207,22 +201,11 @@ void	check_fork(int fork_ret, char **env)
 	}
 }
 
-typedef struct s_state
-{
-	int		i;
-	int		fd[2];
-	int		pid;
-	int		fd1;
-	char	**env;
-}			t_state;
-
 void	check_argc(int argc)
 {
-	//printf("%d\n",argc < 5);
 	if (argc < 5)
 	{
-	//	printf("%d\n",argc < 5);
-		write(2,"Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n",50);
+		write(2, "Usage: ./pipex infile cmd1 cmd2 ... cmdn outfile\n", 50);
 		exit(1);
 	}
 }
@@ -277,7 +260,7 @@ int	main(int argc, char **argv, char **envp)
 			check_pipe_is_valid(pipe(state.fd));
 		state.pid = fork();
 		check_fork(state.pid, state.env);
-		state.fd1 = in_fd;                     
+		state.fd1 = in_fd;
 		if (state.pid == 0)
 			child(state, argc, argv, envp);
 		else
