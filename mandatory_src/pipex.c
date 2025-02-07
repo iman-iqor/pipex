@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/23 16:31:54 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 15:16:48 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,3 +41,9 @@ int	main(int argc, char **argv, char **envp)
 {
 	return (setup_and_execute(argc, argv, envp));
 }
+
+
+
+
+
+

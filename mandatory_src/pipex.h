@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:38 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/01 20:10:07 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 16:40:33 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,5 +32,6 @@ int		open_file_for_writing(char *filename, char **env);
 void	execute_command(char *cmd, char **env, char **envp);
 void	handle_first_child(int *fd, char **argv, char **env, char **envp);
 void	handle_second_child(int *fd, char **argv, char **env, char **envp);
+void ft_execve(char* exact_path, char**av,char** envp);
 
 #endif

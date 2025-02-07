@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:06:47 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/06 21:16:46 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 15:35:49 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -148,6 +148,7 @@ int	ft_pipe_and_fork(char **argv, int argc, char **envp)
 	int		fd[2];
 	int		pid;
 
+	
 	if (!here_doc_exist(argv[1]))
 		return (1);
 	str = here_doc_wih_get_next_line(argv[1], argv[2]);

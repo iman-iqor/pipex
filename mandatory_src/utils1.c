@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:06 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/23 16:29:05 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 15:16:52 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,10 @@ char	**extract_path(char **envp1)
 	}
 	return (NULL);
 }
+
+
+
+
 
 char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 {

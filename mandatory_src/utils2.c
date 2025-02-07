@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/25 20:58:57 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 17:17:12 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,6 +38,16 @@ int	open_file_for_writing(char *filename, char **env)
 	return (fd);
 }
 
+void ft_execve(char* exact_path, char**av,char** envp)
+{
+	if (execve(exact_path, av, envp) == -1)
+	{
+		ft_fprintf(2, "%s: Failed during execve\n", exact_path);
+		free_two_d_array(av);
+		exit(1);
+	}
+}
+
 void	execute_command(char *cmd, char **env, char **envp)
 {
 	char	**av;
@@ -55,16 +65,11 @@ void	execute_command(char *cmd, char **env, char **envp)
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);
-		ft_fprintf(2, "%s is a diirectory", cmd);
+		ft_fprintf(2, "%s is a directory", cmd);
 		exit(1);
 	}
 	exact_path = check_path(env, av[0]);
-	if (execve(exact_path, av, envp) == -1)
-	{
-		perror("Execution failed");
-		free_two_d_array(av);
-		exit(1);
-	}
+	ft_execve(exact_path, av,envp);
 }
 
 void	handle_first_child(int *fd, char **argv, char **env, char **envp)
