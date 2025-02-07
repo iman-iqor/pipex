@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/07 17:17:12 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 20:18:23 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void ft_execve(char* exact_path, char**av,char** envp)
 {
 	if (execve(exact_path, av, envp) == -1)
 	{
-		ft_fprintf(2, "%s: Failed during execve\n", exact_path);
+		ft_fprintf(2, "%s: command not found\n", exact_path);
 		free_two_d_array(av);
 		exit(1);
 	}

@@ -1,0 +1,12 @@
+void	ft_fstr(int fd, char *s, int *len)
+{
+	char	*null;
+
+	if (!s)
+	{
+		null = "(null)";
+		write(fd,null,6);
+		return ;
+	}
+	write(fd,s,*len);
+}

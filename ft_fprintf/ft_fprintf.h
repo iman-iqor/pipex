@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 17:00:58 by imiqor            #+#    #+#             */
-/*   Updated: 2025/01/12 12:46:22 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:27:53 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,6 +16,7 @@
 # include <stdarg.h>
 # include <stdio.h>
 # include <unistd.h>
+# include "../libft/libft.h"
 
 int		ft_fprintf(int fd, const char *format, ...);
 void	fcheck_and_fetch(int fd, char format, int *len, va_list params);

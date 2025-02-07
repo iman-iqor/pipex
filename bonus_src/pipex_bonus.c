@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/07 16:59:27 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/07 21:52:15 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,26 +27,26 @@ char *concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 	return (full_path);
 }
 
+
 char *check_path(char **twoDpath, char *command_name)
 {
 	int i;
 	char *path;
-	char *o;
 	char *result;
 
 	i = 0;
 	path = NULL;
-	o = NULL;
-
+	
 	if (ft_strchr(command_name, '/') != 0 && access(command_name, F_OK | X_OK) != -1)
 	{
 		return (ft_strdup(command_name));		
 	}
+	if(!twoDpath)
+		return NULL;
 	
 	while (twoDpath[i])
 	{
 		path = concatenate_path(twoDpath[i], command_name);
-		ft_fprintf(2, "path: %s\n", path);
 		result = check_command(path, twoDpath, command_name);
 		if (result)
 		{
@@ -87,14 +87,23 @@ char *check_command(char *path, char **twoDpath, char *command_name)
 		free_two_d_array(twoDpath);
 		return (path);
 	}
-	return (command_name);
+	return (NULL);
+}
+void	ft_putstr(char *s1, char *s2)
+{
+	if (!s1)
+	write(2, "(null)", 6);
+	else
+		write(2, s1, ft_strlen(s1));
+	write(2, s2, ft_strlen(s2));
 }
 
 void ft_execve(char *exact_path, char **av, char **envp)
 {
 	if (execve(exact_path, av, envp) == -1)
 	{
-		ft_fprintf(2, "%s: Failed during execve\n", exact_path);
+
+		ft_putstr(exact_path, ": not found or permission denied\n");
 		free_two_d_array(av);
 		exit(1);
 	}
