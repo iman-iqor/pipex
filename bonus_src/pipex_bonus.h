@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:17:07 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:15:52 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 21:43:10 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_state
 char		*concatenate_path(char *oneDfromthetwoDpath, char *command_name);
 char		*check_path(char **twoDpath, char *command_name);
 char		**extract_path(char **envp1);
-char		*check_command(char *path, char **twoDpath, char *command_name);
+char		*check_command(char *path, char **twoDpath);
 void		execute_command(char *cmd, char **env, char **envp);
 void		free_two_d_array(char **arr);
 void		check_pipe_is_valid(int pipe_return);

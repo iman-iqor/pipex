@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:42 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:27:54 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 21:21:06 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,8 +35,7 @@ char	*check_path(char **twoDpath, char *command_name)
 
 	i = 0;
 	path = NULL;
-	if (ft_strchr(command_name, '/') != 0 && access(command_name,
-			F_OK | X_OK) != -1)
+	if (ft_strchr(command_name, '/'))
 	{
 		return (ft_strdup(command_name));
 	}
@@ -45,7 +44,7 @@ char	*check_path(char **twoDpath, char *command_name)
 	while (twoDpath[i])
 	{
 		path = concatenate_path(twoDpath[i], command_name);
-		result = check_command(path, twoDpath, command_name);
+		result = check_command(path, twoDpath);
 		if (result)
 		{
 			return (result);
@@ -78,9 +77,9 @@ char	**extract_path(char **envp1)
 	return (NULL);
 }
 
-char	*check_command(char *path, char **twoDpath, char *command_name)
+char	*check_command(char *path, char **twoDpath)
 {
-	if (access(path, F_OK | X_OK) == 0)
+	if (access(path, F_OK) == 0)
 	{
 		free_two_d_array(twoDpath);
 		return (path);

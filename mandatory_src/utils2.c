@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 18:44:00 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 21:06:25 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,11 +42,18 @@ int	open_file_for_writing(char *filename, char **env)
 
 void	ft_execve(char *exact_path, char **av, char **envp)
 {
-	if (execve(exact_path, av, envp) == -1)
+	if (strchr(exact_path, '/') && execve(exact_path, av, envp) == -1)
 	{
-		ft_fprintf(2,"%s\n",exact_path);
+		if (access(exact_path, F_OK) == 0 && access(exact_path, X_OK) == -1)
+			ft_fprintf(2, "%s:permission denied\n", exact_path);
+		else if (access(exact_path, F_OK) != 0)
+			ft_fprintf(2, "%s:command not found\n", exact_path);
 		free_two_d_array(av);
 		exit(1);
+	}
+	else
+	{
+		ft_fprintf(2, "%s:command not found\n", exact_path);
 	}
 }
 
