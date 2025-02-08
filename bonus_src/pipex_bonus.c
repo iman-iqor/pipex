@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/07 21:52:15 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 16:52:49 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -102,8 +102,8 @@ void ft_execve(char *exact_path, char **av, char **envp)
 {
 	if (execve(exact_path, av, envp) == -1)
 	{
-
-		ft_putstr(exact_path, ": not found or permission denied\n");
+		
+		perror(exact_path);
 		free_two_d_array(av);
 		exit(1);
 	}
@@ -196,6 +196,7 @@ int open_input_file(char *filename, char **env)
 	{
 		free_two_d_array(env);
 		perror(filename);
+		exit(EXIT_FAILURE);
 	}
 	return (fd);
 }
@@ -209,6 +210,7 @@ int open_output_file(char *filename, char **env)
 	{
 		free_two_d_array(env);
 		perror(filename);
+		exit(EXIT_FAILURE);
 	}
 	return (fd);
 }
@@ -270,7 +272,7 @@ void in_parent(t_state state, int *in_fd)
 
 void child(t_state state, int argc, char **argv, char **envp)
 {
-	if (state.i && state.fd1)
+	if (state.fd1)
 		dup2_and_close_pipe_fds(-1, state.fd1, 0);
 	if (state.i != argc - 2)
 		dup2_and_close_pipe_fds(state.fd[0], state.fd[1], 1);
