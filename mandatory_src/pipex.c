@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/07 20:18:00 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 17:34:24 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,7 @@ int	setup_and_execute(int argc, char **argv, char **envp)
 	int		fd[2];
 	char	**env;
 
-	int (pid1), (pid2);
+	int(pid1), (pid2);
 	if (pipe(fd) == -1)
 		return (perror("pipe"), -1);
 	if (argc <= 4)
@@ -41,9 +41,3 @@ int	main(int argc, char **argv, char **envp)
 {
 	return (setup_and_execute(argc, argv, envp));
 }
-
-
-
-
-
-

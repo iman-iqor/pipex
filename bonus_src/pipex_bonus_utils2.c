@@ -1,44 +1,16 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   utils2.c                                           :+:      :+:    :+:   */
+/*   pipex_bonus_utils2.c                               :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 18:20:28 by imiqor           ###   ########.fr       */
+/*   Created: 2025/02/08 17:14:39 by imiqor            #+#    #+#             */
+/*   Updated: 2025/02/08 17:18:01 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "pipex.h"
-
-int	open_file_for_reading(char *filename, char **env)
-{
-	int	fd;
-
-	fd = open(filename, O_RDONLY);
-	if (fd < 0)
-	{
-		free_two_d_array(env);
-		perror(filename);
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
-}
-
-int	open_file_for_writing(char *filename, char **env)
-{
-	int	fd;
-
-	fd = open(filename, O_WRONLY | O_TRUNC | O_CREAT, 0664);
-	if (fd < 0)
-	{
-		free_two_d_array(env);
-		perror(filename);
-		exit(EXIT_FAILURE);
-	}
-	return (fd);
-}
+#include "pipex_bonus.h"
 
 void	ft_execve(char *exact_path, char **av, char **envp)
 {
@@ -74,28 +46,42 @@ void	execute_command(char *cmd, char **env, char **envp)
 	ft_execve(exact_path, av, envp);
 }
 
-void	handle_first_child(int *fd, char **argv, char **env, char **envp)
+void	free_two_d_array(char **arr)
 {
-	int	f1;
+	int	i;
 
-	close(fd[0]);
-	dup2(fd[1], 1);
-	close(fd[1]);
-	f1 = open_file_for_reading(argv[1], env);
-	dup2(f1, 0);
-	close(f1);
-	execute_command(argv[2], env, envp);
+	i = 0;
+	if (!arr)
+	{
+		return ;
+	}
+	while (arr[i] != NULL)
+	{
+		free(arr[i]);
+		i++;
+	}
+	free(arr);
 }
 
-void	handle_second_child(int *fd, char **argv, char **env, char **envp)
+void	check_pipe_is_valid(int pipe_return)
 {
-	int	f2;
+	if (pipe_return == -1)
+	{
+		ft_fprintf(2, "Pipe failed a ptipana");
+		exit(-1);
+	}
+}
 
-	close(fd[1]);
-	dup2(fd[0], 0);
-	close(fd[0]);
-	f2 = open_file_for_writing(argv[4], env);
-	dup2(f2, 1);
-	close(f2);
-	execute_command(argv[3], env, envp);
+void	dup2_and_close_pipe_fds(int fd1, int fd2, int mode)
+{
+	int	dup_ret;
+
+	close(fd1);
+	dup_ret = dup2(fd2, mode);
+	if (dup_ret == -1)
+	{
+		ft_fprintf(2, "Dup2 Failed\n");
+		exit(EXIT_FAILURE);
+	}
+	close(fd2);
 }

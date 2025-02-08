@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/20 17:00:39 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/07 21:44:39 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 17:32:08 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,18 +40,17 @@ void	ft_fputnumber(int fd, int n, int *len)
 
 void	ft_fstr(int fd, char *s, int *len)
 {
+	char	*null;
+
 	(void)len;
 	(void)fd;
-	dprintf(2, "((%s))\n",s);
-	//char	*null;
-
-	//if (!s)
-	//{
-	//	null = "(null)";
-	//	*len +=write(fd,null,6);
-	//	return ;
-	//}
-	//*len += write(fd,s,ft_strlen(s));
+	if (!s)
+	{
+		null = "(null)";
+		*len += write(fd, null, 6);
+		return ;
+	}
+	*len += write(fd, s, ft_strlen(s));
 }
 
 void	ft_fput_unsigned_nbr(int fd, unsigned int n, int *len)
