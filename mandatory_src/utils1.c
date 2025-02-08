@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:06 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 18:17:05 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 18:48:25 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,10 +70,20 @@ char	*check_command(char *path, char **twoDpath)
 {
 	if (access(path, X_OK | F_OK) == 0)
 	{
+		dprintf(2,"up\n");
 		free_two_d_array(twoDpath);
 		return (path);
 	}
-	return (NULL);
+	//else if (access(path, F_OK) != 0)
+	//{
+	//	return ("no such file or directory");
+	//}
+	//else if (access(path, F_OK) == 0 && access(path, X_OK) != 0)
+	//{
+	//	free_two_d_array(twoDpath);
+	//	return ("permission denied");
+	//}
+	return NULL;
 }
 
 char	*check_path(char **twoDpath, char *command_name)
@@ -84,7 +94,8 @@ char	*check_path(char **twoDpath, char *command_name)
 
 	i = 0;
 	path = NULL;
-	if (access(command_name, F_OK | X_OK) != -1)
+	if (ft_strchr(command_name, '/') != 0 && access(command_name,
+			F_OK | X_OK) != -1)
 		return (ft_strdup(command_name));
 	while (twoDpath[i])
 	{

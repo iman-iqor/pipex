@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 18:20:28 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/08 18:44:00 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void	ft_execve(char *exact_path, char **av, char **envp)
 {
 	if (execve(exact_path, av, envp) == -1)
 	{
-		perror(exact_path);
+		ft_fprintf(2,"%s\n",exact_path);
 		free_two_d_array(av);
 		exit(1);
 	}
