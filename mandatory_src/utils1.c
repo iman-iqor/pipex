@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:06 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 14:26:56 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 14:46:15 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,6 @@ char	*check_path(char **twoDpath, char *command_name)
 		result = check_command(path, twoDpath);
 		if (result)
 		{
-			dprintf(1,"%s:this is the result variable\n",result);
 			return (result);
 		}
 		i++;

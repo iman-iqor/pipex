@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   here_d oc_utils2.c                                 :+:      :+:    :+:   */
+/*   here_doc_utils2.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:22:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:30:16 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 15:17:18 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	close_and_dup2_pipe_fds(int fd1, int fd2, int mode)
 	close(fd2);
 }
 
-int	setup_and_execute(int argc, char **argv, char **envp)
+int	setup_and_execute(char **argv, char **envp)
 {
 	char	**env;
 	int		fd[2];

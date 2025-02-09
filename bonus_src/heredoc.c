@@ -6,17 +6,16 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:06:47 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:21:19 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 15:18:43 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-int	ft_pipe_and_fork(char **argv, int argc, char **envp)
+int	ft_pipe_and_fork(char **argv, char **envp)
 {
 	char	*str;
 	int		fd[2];
-	int		pid;
 
 	if (!here_doc_exist(argv[1]))
 		return (1);
@@ -27,6 +26,6 @@ int	ft_pipe_and_fork(char **argv, int argc, char **envp)
 	dup2(fd[0], 0);
 	close(fd[0]);
 	close(fd[1]);
-	setup_and_execute(argc, argv, envp);
+	setup_and_execute(argv, envp);
 	return (0);
 }

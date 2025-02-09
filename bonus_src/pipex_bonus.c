@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:09:39 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 16:26:23 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ int	main(int argc, char **argv, char **envp)
 	in_fd = 0;
 	ft_memset(&state, 0, sizeof(state));
 	check_argc(argc, argv);
-	if (!ft_pipe_and_fork(argv, argc, envp))
+	if (!ft_pipe_and_fork(argv, envp))
 		return (0);
 	init_state(&state, argc, argv, envp);
 	while (state.i < argc - 1)
