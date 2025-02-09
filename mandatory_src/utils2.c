@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 14:45:53 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 19:03:12 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,7 +40,7 @@ int	open_file_for_writing(char *filename, char **env)
 	return (fd);
 }
 
-void	ft_execve(char *exact_path, char **av, char **envp)
+int	ft_execve(char *exact_path, char **av, char **envp)
 {
 	if (strchr(exact_path, '/') && execve(exact_path, av, envp) == -1)
 	{
@@ -48,13 +48,10 @@ void	ft_execve(char *exact_path, char **av, char **envp)
 			ft_fprintf(2, "%s:permission denied\n", exact_path);
 		else if (access(exact_path, F_OK) != 0)
 			ft_fprintf(2, "%s:command not found\n", exact_path);
-		free_two_d_array(av);
-		exit(1);
 	}
 	else
-	{
 		ft_fprintf(2, "%s:command not found\n", exact_path);
-	}
+	return (0);
 }
 
 void	execute_command(char *cmd, char **env, char **envp)
@@ -78,7 +75,10 @@ void	execute_command(char *cmd, char **env, char **envp)
 		exit(1);
 	}
 	exact_path = check_path(env, av[0]);
-	ft_execve(exact_path, av, envp);
+	int code = ft_execve(exact_path, av, envp);
+	free_two_d_array(env);
+	free_two_d_array(av);
+	exit(code);
 }
 
 void	handle_first_child(int *fd, char **argv, char **env, char **envp)

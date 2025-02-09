@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:22:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 15:17:18 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 00:35:16 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,7 +43,7 @@ void	pipe_is_valid(int pipe_return)
 {
 	if (pipe_return == -1)
 	{
-		ft_fprintf(2, "pipe failed\n");
+		ft_putstr("pipe", " failed\n");
 		exit(-1);
 	}
 }
@@ -52,7 +52,7 @@ void	fork_is_valid(int fork_return)
 {
 	if (fork_return == -1)
 	{
-		ft_fprintf(2, "fork failed\n");
+		ft_putstr("fork", " failed\n");
 		exit(-1);
 	}
 }

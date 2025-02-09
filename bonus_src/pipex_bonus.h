@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:17:07 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 16:58:32 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 00:10:20 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,7 +34,7 @@ typedef struct s_state
 char		*concatenate_path(char *oneDfromthetwoDpath, char *command_name);
 char		*check_path(char **twoDpath_env, char *command_name);
 char		**extract_path(char **envp1);
-char		*check_command(char *path, char **twoDpath_env);
+char		*check_command(char *path);
 void		execute_command(char *cmd, char **env, char **envp);
 void		free_two_d_array(char **arr);
 void		check_pipe_is_valid(int pipe_return);
@@ -60,6 +60,6 @@ void		fork_is_valid(int fork_return);
 void		close_and_dup2_pipe_fds(int fd1, int fd2, int mode);
 int			setup_and_execute(char **argv, char **envp);
 int			ft_pipe_and_fork(char **argv, char **envp);
-void		ft_execve(char *exact_path, char **av, char **envp);
-
+int		ft_execve(char *exact_path, char **av, char **envp);
+void	ft_putstr(char *s1, char *s2);
 #endif

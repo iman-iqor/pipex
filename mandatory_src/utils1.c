@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:06 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 14:46:15 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 22:52:39 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,12 +66,10 @@ void	free_two_d_array(char **arr)
 	free(arr);
 }
 
-char	*check_command(char *path, char **twoDpath)
+char	*check_command(char *path)
 {
 	if (access(path, F_OK) == 0)
 	{
-		free_two_d_array(twoDpath);
-		dprintf(1,"%s:of check_command()\n",path);
 		return (path);
 	}
 	return (NULL);
@@ -90,13 +88,11 @@ char	*check_path(char **twoDpath, char *command_name)
 	while (twoDpath[i])
 	{
 		path = concatenate_path(twoDpath[i], command_name);
-		result = check_command(path, twoDpath);
+		result = check_command(path);
 		if (result)
-		{
 			return (result);
-		}
+		free(path);
 		i++;
 	}
-	free_two_d_array(twoDpath);
 	return (command_name);
 }

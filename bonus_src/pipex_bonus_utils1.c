@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:42 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 16:58:20 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 22:58:31 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,7 +27,7 @@ char	*concatenate_path(char *oneDfromthetwoDpath, char *command_name)
 	return (full_path);
 }
 
-char	*check_path(char **twoDpath_env, char *command_name)
+char	*check_path(char **twoDpath, char *command_name)
 {
 	int		i;
 	char	*path;
@@ -35,24 +35,17 @@ char	*check_path(char **twoDpath_env, char *command_name)
 
 	i = 0;
 	path = NULL;
-	if (ft_strchr(command_name, '/'))
-	{
+	if (ft_strchr(command_name, '/') )
 		return (ft_strdup(command_name));
-	}
-	if (!twoDpath_env)
-		return (NULL);
-	while (twoDpath_env[i])
+	while (twoDpath[i])
 	{
-		// ft_printf("2dpath: %s\n", twoDpath_env[i]);
-		path = concatenate_path(twoDpath_env[i], command_name);
-		result = check_command(path, twoDpath_env);
+		path = concatenate_path(twoDpath[i], command_name);
+		result = check_command(path);
 		if (result)
-		{
 			return (result);
-		}
+		free(path);
 		i++;
 	}
-	free_two_d_array(twoDpath_env);
 	return (command_name);
 }
 
@@ -78,12 +71,10 @@ char	**extract_path(char **envp1)
 	return (NULL);
 }
 
-char	*check_command(char *path, char **twoDpath_env)
+char	*check_command(char *path)
 {
-	(void)twoDpath_env;
 	if (access(path, F_OK) == 0)
 	{
-		// free_two_d_array(twoDpath);
 		return (path);
 	}
 	return (NULL);

@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:28 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:16:59 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 00:30:12 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	dup2_and_close_file_fd(int fd, int mode)
 	dup_ret = dup2(fd, mode);
 	if (dup_ret == -1)
 	{
-		ft_fprintf(2, "Dup2 Failed\n");
+		ft_putstr("Dup2", " Failed\n");
 		exit(EXIT_FAILURE);
 	}
 	close(fd);
@@ -58,7 +58,7 @@ void	check_fork(int fork_ret, char **env)
 	if (fork_ret == -1)
 	{
 		free_two_d_array(env);
-		ft_fprintf(2, "Fork failed\n");
+		ft_putstr("Fork", " failed\n");
 		exit(-1);
 	}
 }
@@ -69,7 +69,7 @@ void	check_argc(int argc, char **argv)
 	{
 		if (argc < 6)
 		{
-			ft_fprintf(2, "usage not fin e\n");
+			ft_putstr("usage", " not fine\n");
 			exit(1);
 		}
 	}

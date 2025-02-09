@@ -6,52 +6,53 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:39 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/09 17:35:38 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 00:36:26 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex_bonus.h"
 
-void	ft_execve(char *command_path, char **av, char **envp)
+int	ft_execve(char *exact_path, char **av, char **envp)
 {
-	if (strchr(command_path, '/') && execve(command_path, av, envp) == -1)
+	if (strchr(exact_path, '/') && execve(exact_path, av, envp) == -1)
 	{
-		if (access(command_path, F_OK) == 0 && access(command_path, X_OK) == -1)
-			ft_fprintf(2, "%s: permission denied\n", command_path);
-		else if (access(command_path, F_OK) != 0)
-			ft_fprintf(2, "%s: command not found\n", command_path);
-		free(command_path);
-		free_two_d_array(av);
-		exit(1);
+		if (access(exact_path, F_OK) == 0 && access(exact_path, X_OK) == -1)
+			ft_putstr(exact_path, ":permission denied\n");
+		else if (access(exact_path, F_OK) != 0)
+			ft_putstr(exact_path, ":command not found\n" );
 	}
 	else
-	{
-		ft_fprintf(2, "%s: command not found\n", command_path);
-	}
+		ft_putstr(exact_path, ":command not found\n");
+	return (0);
 }
+
 
 void	execute_command(char *cmd, char **env, char **envp)
 {
 	char	**av;
-	char	*command_path;
+	char	*exact_path;
+	int		code;
 
 	av = ft_split(cmd, ' ');
 	if (!av || !av[0])
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);
-		ft_fprintf(2, "Invalid command => empty\n");
+		ft_putstr("Invalid", " command => empty\n");
 		exit(1);
 	}
 	if (open(cmd, __O_DIRECTORY) != -1)
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);
-		ft_fprintf(2, "%s: is a directory\n", cmd);
+		ft_putstr(cmd,"is a directory");
 		exit(1);
 	}
-	command_path = check_path(env, av[0]);
-	ft_execve(command_path, av, envp);
+	exact_path = check_path(env, av[0]);
+	code = ft_execve(exact_path, av, envp);
+	free_two_d_array(env);
+	free_two_d_array(av);
+	exit(code);
 }
 
 void	free_two_d_array(char **arr)
@@ -69,8 +70,8 @@ void	free_two_d_array(char **arr)
 		i++;
 	}
 	free(arr);
-	arr=NULL;
 }
+
 
 void	check_pipe_is_valid(int pipe_return)
 {
