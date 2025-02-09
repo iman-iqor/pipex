@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:42 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 21:21:06 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 14:36:48 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,7 @@ char	*check_command(char *path, char **twoDpath)
 		free_two_d_array(twoDpath);
 		return (path);
 	}
+	dprintf(2,"%s:this is path from check command\n",path);
 	return (NULL);
 }
 

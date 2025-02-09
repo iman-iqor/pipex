@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 21:06:25 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/09 14:27:02 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,6 +78,7 @@ void	execute_command(char *cmd, char **env, char **envp)
 		exit(1);
 	}
 	exact_path = check_path(env, av[0]);
+	dprintf(2,"%s:in function execute_command\n",exact_path);
 	ft_execve(exact_path, av, envp);
 }
 
