@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 15:15:35 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 17:10:30 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,7 +49,7 @@ int	setup_and_execute(int argc, char **argv, char **envp)
 
 	if (pipe(fd) == -1)
 		return (perror("pipe"), -1);
-	if (argc <= 4)
+	if (argc < 5 || argc > 4)
 		return (ft_printf("Usage: %s file1 cmd1 cmd2 file2\n", argv[0]), 1);
 	env = extract_path(envp);
 	pid1 = fork();
