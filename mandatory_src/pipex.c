@@ -6,18 +6,47 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/15 21:53:32 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/08 17:34:24 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:15:35 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "pipex.h"
 
+void	execute_command(char *cmd, char **env, char **envp)
+{
+	char	**av;
+	char	*exact_path;
+	int		code;
+
+	av = ft_split(cmd, ' ');
+	if (!av || !av[0])
+	{
+		free_two_d_array(env);
+		free_two_d_array(av);
+		ft_fprintf(2, "Invalid command => empty\n");
+		exit(1);
+	}
+	if (open(cmd, __O_DIRECTORY) != -1)
+	{
+		free_two_d_array(env);
+		free_two_d_array(av);
+		ft_fprintf(2, "%s is a directory", cmd);
+		exit(1);
+	}
+	exact_path = check_path(env, av[0]);
+	code = ft_execve(exact_path, av, envp);
+	free_two_d_array(env);
+	free_two_d_array(av);
+	exit(code);
+}
+
 int	setup_and_execute(int argc, char **argv, char **envp)
 {
 	int		fd[2];
+	int		pid1;
+	int		pid2;
 	char	**env;
 
-	int(pid1), (pid2);
 	if (pipe(fd) == -1)
 		return (perror("pipe"), -1);
 	if (argc <= 4)

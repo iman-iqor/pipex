@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 17:14:49 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 00:03:33 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 14:52:23 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,14 +15,14 @@
 void	wait_all_pipex(void)
 {
 	while (wait(NULL) > 0)
-		continue ;
+		;
 }
 
 void	init_state(t_state *state, int argc, char **argv, char **envp)
 {
 	state->i = 2;
 	state->env = extract_path(envp);
-	state->fd1 = open_input_file(argv[1], state->env);
+	state->fd1 = open_input_file(argv[argc - 1], argv[1], state->env);
 	dup2_and_close_file_fd(state->fd1, 0);
 	state->fd1 = open_output_file(argv[argc - 1], state->env);
 	dup2_and_close_file_fd(state->fd1, 1);
@@ -65,8 +65,7 @@ int	main(int argc, char **argv, char **envp)
 		state.fd1 = in_fd;
 		if (state.pid == 0)
 			child(state, argc, argv, envp);
-		else
-			in_parent(state, &in_fd);
+		in_parent(state, &in_fd);
 		state.i++;
 	}
 	wait_all_pipex();

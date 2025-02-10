@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:39 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 00:36:26 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:09:47 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,13 +19,12 @@ int	ft_execve(char *exact_path, char **av, char **envp)
 		if (access(exact_path, F_OK) == 0 && access(exact_path, X_OK) == -1)
 			ft_putstr(exact_path, ":permission denied\n");
 		else if (access(exact_path, F_OK) != 0)
-			ft_putstr(exact_path, ":command not found\n" );
+			ft_putstr(exact_path, ":command not found\n");
 	}
 	else
 		ft_putstr(exact_path, ":command not found\n");
 	return (0);
 }
-
 
 void	execute_command(char *cmd, char **env, char **envp)
 {
@@ -45,7 +44,7 @@ void	execute_command(char *cmd, char **env, char **envp)
 	{
 		free_two_d_array(env);
 		free_two_d_array(av);
-		ft_putstr(cmd,"is a directory");
+		ft_putstr(cmd, "is a directory");
 		exit(1);
 	}
 	exact_path = check_path(env, av[0]);
@@ -71,7 +70,6 @@ void	free_two_d_array(char **arr)
 	}
 	free(arr);
 }
-
 
 void	check_pipe_is_valid(int pipe_return)
 {

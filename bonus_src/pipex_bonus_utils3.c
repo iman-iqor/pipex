@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:28 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 00:30:12 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/10 15:09:51 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,16 +25,19 @@ void	dup2_and_close_file_fd(int fd, int mode)
 	close(fd);
 }
 
-int	open_input_file(char *filename, char **env)
+int	open_input_file(char *file, char *filename, char **env)
 {
 	int	fd;
+	int	fd2;
 
 	fd = open(filename, O_RDONLY);
 	if (fd < 0)
 	{
 		free_two_d_array(env);
 		perror(filename);
-		exit(EXIT_FAILURE);
+		fd2 = open(file, O_CREAT | O_WRONLY | O_TRUNC, 0644);
+		close(fd2);
+		exit(1);
 	}
 	return (fd);
 }
