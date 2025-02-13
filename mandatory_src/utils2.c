@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:11 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 15:15:43 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/13 01:06:27 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,6 +51,8 @@ int	ft_execve(char *exact_path, char **av, char **envp)
 	}
 	else
 		ft_fprintf(2, "%s:command not found\n", exact_path);
+	if (strchr(exact_path, '/'))
+		free(exact_path);
 	return (0);
 }
 

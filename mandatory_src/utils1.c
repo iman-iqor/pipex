@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/01/23 16:28:06 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 15:11:11 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/13 00:14:50 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -75,7 +75,7 @@ char	*check_command(char *path)
 	return (NULL);
 }
 
-char	*check_path(char **twoDpath, char *command_name)
+char	*check_path(char **twoDpath, char *command_name, char **av)
 {
 	int		i;
 	char	*path;
@@ -85,6 +85,12 @@ char	*check_path(char **twoDpath, char *command_name)
 	path = NULL;
 	if (ft_strchr(command_name, '/'))
 		return (ft_strdup(command_name));
+	else if (!twoDpath)
+	{
+		ft_putstr("command", " not founnd\n");
+		free_two_d_array(av);
+		exit(EXIT_FAILURE);
+	}
 	while (twoDpath[i])
 	{
 		path = concatenate_path(twoDpath[i], command_name);

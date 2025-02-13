@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/08 17:14:39 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 15:09:47 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/12 23:27:13 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,8 @@ int	ft_execve(char *exact_path, char **av, char **envp)
 	}
 	else
 		ft_putstr(exact_path, ":command not found\n");
+	if (strchr(exact_path, '/'))
+		free(exact_path);
 	return (0);
 }
 
@@ -47,7 +49,7 @@ void	execute_command(char *cmd, char **env, char **envp)
 		ft_putstr(cmd, "is a directory");
 		exit(1);
 	}
-	exact_path = check_path(env, av[0]);
+	exact_path = check_path(env, av[0], av);
 	code = ft_execve(exact_path, av, envp);
 	free_two_d_array(env);
 	free_two_d_array(av);

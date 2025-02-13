@@ -6,7 +6,7 @@
 /*   By: imiqor <imiqor@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/06 21:17:07 by imiqor            #+#    #+#             */
-/*   Updated: 2025/02/10 15:10:07 by imiqor           ###   ########.fr       */
+/*   Updated: 2025/02/12 22:40:44 by imiqor           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include "../ft_fprintf/ft_fprintf.h"
 # include "../ft_printf/ft_printf.h"
 # include "../libft/libft.h"
-# include "./m/get_next_line_bonus.h"
+# include "./get_next_line_project/get_next_line_bonus.h"
 # include <fcntl.h>
 # include <stdlib.h>
 # include <sys/wait.h>
@@ -32,7 +32,7 @@ typedef struct s_state
 }			t_state;
 
 char		*concatenate_path(char *oneDfromthetwoDpath, char *command_name);
-char		*check_path(char **twoDpath_env, char *command_name);
+char		*check_path(char **twoDpath_env, char *command_name, char **av);
 char		**extract_path(char **envp1);
 char		*check_command(char *path);
 void		execute_command(char *cmd, char **env, char **envp);
