@@ -3,9 +3,6 @@
 ## About 💡
 **Pipex** is a C project that replicates the behavior of piping commands in Unix, where the output of one command becomes the input of another, all through a pipe mechanism. This project simulates the shell command `< file1 cmd1 | cmd2 > file2`, helping you learn about **pipes**, **forking**, and **execve**.
 
-## How It Works 🛠️
-- **Input**: `< file1 cmd1 cmd2 file2`
-- **Output**: `< file1 cmd1 | cmd2 > file2`
 
 Replicates commands like:
 ```bash
